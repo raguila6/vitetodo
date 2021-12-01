@@ -1,34 +1,36 @@
 <script setup>
-import useTodos from '../composables/useTodos';
-
-const {pending, completed, changeStatus} = useTodos();
-
-
+  import useTodos from '../composables/useTodos'
+  const { pending, completed, changeStatus } = useTodos()
+  defineProps({
+    isCompleted: {
+      default: false,
+      type: Boolean,
+    },
+  })
 </script>
 
 <template>
-<div class="bg-blue-600">
-<div class="flex-auto">
-      <h3 class="text-lg text-center text-green-500 ">Pending</h3>
-    <ul class="pt-2 space-y-4" >
-      <li v-for="todo in pending" :key="todo.id" @click="changeStatus(todo.id)" class="w-full px-2 text-center text-black duration-300 bg-white hover:cursor-pointer hover:bg-green-200 hover:text-gray-400">
-        {{todo.content}}
+  <div class="w-1/3">
+    <h3
+      class="text-2xl text-center"
+      :class="isCompleted ? 'text-green-400' : 'text-blue-400'"
+    >
+      {{ isCompleted ? 'Completed' : 'Pending' }}
+    </h3>
+    <ul class="pt-8 space-y-4">
+      <li
+        v-for="todo in isCompleted ? completed : pending"
+        :key="todo.id"
+        @click="changeStatus(todo.id)"
+        :class="
+          isCompleted
+            ? 'text-green-600 hover:bg-green-400'
+            : 'text-blue-600 hover:bg-blue-400'
+        "
+        class="w-full px-4 py-2 font-bold text-center transition-colors duration-500 bg-gray-300 rounded-lg  hover:cursor-pointer hover:text-gray-200"
+      >
+        {{ todo.text }}
       </li>
-      
     </ul>
-    </div>
- <div class="flex-auto">
-  <h3 class="text-lg text-center text-red-700">Completed Items</h3>
-  <ul class="pt-2 space-y-4">
-    <li v-for="todo in completed" :key="todo.id" @click="changeStatus(todo.id)" class="w-full px-2 text-center bg-white hover:cursor-pointer hover:bg-grey-200 hover:text-gray-400">
-     {{todo.content}}
-    </li>
-  </ul>  
-</div>
-
-</div>
-
- 
-
-
+  </div>
 </template>
